@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id                Int       @id @default(autoincrement())
+  name              String
+  email             String    @unique
+  password          String?
+  phone_number      String?
+  last_logged_in_at DateTime?
+  is_deleted        Boolean   @default(false)
+  created_at        DateTime  @default(now())
+  updated_at        DateTime?
+  cart              cart[]
+}
+
+model book {
+  id               Int             @id @default(autoincrement())
+  title            String
+  author_id        Int
+  genre            String
+  publication_date DateTime
+  price            Int
+  quantity         Int
+  category         String
+  is_deleted       Boolean         @default(false)
+  created_at       DateTime        @default(now())
+  updated_at       DateTime
+  author           author          @relation(fields: [author_id], references: [id])
+  cart_details     cart_details[]
+}
+
+model author {
+  id           Int      @id @default(autoincrement())
+  name         String
+  natiionality String
+  birth_date   DateTime
+  is_deleted       Boolean         @default(false)
+  created_at       DateTime        @default(now())
+  updated_at       DateTime
+  book         book[]
+}
+
+model cart {
+  id           Int            @id @default(autoincrement())
+  user_id      Int
+  is_deleted   Boolean        @default(false)
+  created_at   DateTime       @default(now())
+  updated_at   DateTime
+  user         user           @relation(fields: [user_id], references: [id])
+  cart_details cart_details[]
+}
+
+model cart_details {
+  id         Int      @id @default(autoincrement())
+  cart_id    Int
+  book_id    Int
+  price      Int
+  quantity   Int
+  is_deleted Boolean  @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime
+  cart       cart     @relation(fields: [cart_id], references: [id])
+  book       book     @relation(fields: [book_id], references: [id])
+}
+
