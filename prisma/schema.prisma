@@ -24,7 +24,7 @@ model user {
 }
 
 model book {
-  id               Int             @id @default(autoincrement())
+  id               Int            @id @default(autoincrement())
   title            String
   author_id        Int
   genre            String
@@ -32,10 +32,10 @@ model book {
   price            Int
   quantity         Int
   category         String
-  is_deleted       Boolean         @default(false)
-  created_at       DateTime        @default(now())
-  updated_at       DateTime
-  author           author          @relation(fields: [author_id], references: [id])
+  is_deleted       Boolean        @default(false)
+  created_at       DateTime      @default(now())
+  updated_at       DateTime?
+  author           author         @relation(fields: [author_id], references: [id])
   cart_details     cart_details[]
 }
 
@@ -44,9 +44,9 @@ model author {
   name         String
   natiionality String
   birth_date   DateTime
-  is_deleted       Boolean         @default(false)
-  created_at       DateTime        @default(now())
-  updated_at       DateTime
+  is_deleted   Boolean  @default(false)
+  created_at   DateTime @default(now())
+  updated_at   DateTime?
   book         book[]
 }
 
@@ -55,7 +55,7 @@ model cart {
   user_id      Int
   is_deleted   Boolean        @default(false)
   created_at   DateTime       @default(now())
-  updated_at   DateTime
+  updated_at   DateTime?
   user         user           @relation(fields: [user_id], references: [id])
   cart_details cart_details[]
 }
@@ -68,8 +68,7 @@ model cart_details {
   quantity   Int
   is_deleted Boolean  @default(false)
   created_at DateTime @default(now())
-  updated_at DateTime
+  updated_at DateTime?
   cart       cart     @relation(fields: [cart_id], references: [id])
   book       book     @relation(fields: [book_id], references: [id])
 }
-

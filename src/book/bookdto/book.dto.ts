@@ -2,6 +2,8 @@ import { IsDate, IsNotEmpty, Min } from 'class-validator';
 
 export class CreateBookDto {
   @IsNotEmpty()
+  author_id: number;
+  @IsNotEmpty()
   title: string;
   @IsNotEmpty()
   genre: string;

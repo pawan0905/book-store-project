@@ -20,6 +20,7 @@ export class BookService {
     const createBook = await this.prisma.book.create({
       data: {
         title: data.title,
+        author_id: data.author_id,
         genre: data.genre,
         publication_date: data.publication_date,
         price: data.price,
@@ -84,17 +85,6 @@ export class BookService {
       skip: page * perPage,
       where: {
         is_deleted: false,
-      },
-      include: {
-        book: {
-          select: {
-            title: true,
-            author_id: true,
-            genre: true,
-            publication_date: true,
-            id: true,
-          },
-        },
       },
     });
     const data = await Promise.all(
